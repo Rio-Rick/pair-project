@@ -1,11 +1,10 @@
 {
   "development": {
     "username": "postgres",
-    "password": "bumidatar123",
+    "password": null,
     "database": "pair_project",
     "host": "127.0.0.1",
     "dialect": "postgres",
-    "port" : 7777
   },
   "test": {
     "username": "root",
