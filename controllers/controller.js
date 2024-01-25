@@ -32,7 +32,7 @@ class Controller {
             let userId = req.session.userId
 
             // console.log(req.body);
-            const {title, caption, image} =req.body
+            const {title, caption, image} = req.body
             await Post.create({ProfileId : userId,title, caption, image})
             res.redirect('/')
 
@@ -52,6 +52,7 @@ class Controller {
         try {
             const {email, password} = req.body
             await User.create({email, password})
+            // await Profile.create({username, avatar, about,gender})
             res.redirect('/login')
         } catch (error) {
             console.log(error);
@@ -102,11 +103,35 @@ class Controller {
     static async showProfile(req, res) {
         try {
             let userId = req.session.userId
-            
-            res.render('profile',{userId})
+            let data = Profile.findOne({
+                where : {userId:UserId}
+            })
+
+            if (!data) {
+                res.redirect('/addProfile')
+            }
+            res.render('profile',{userId, data})
         } catch (error) {
             console.log(error);
             res.send(error)
+        }
+    }
+
+    static async addProfile() {
+        try {
+            
+        } catch (error) {
+            console.log(error);
+            res.send(error)  
+        }
+    }
+
+    static async handlerAddProfile() {
+        try {
+            
+        } catch (error) {
+            console.log(error);
+            res.send(error)  
         }
     }
 }

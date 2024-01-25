@@ -13,20 +13,35 @@ const storage = multer.diskStorage({
         let time = new Date().getTime()
         req.body.image = title + time + path.extname(file.originalname) //titlenya ganti, covernya ganti
         cb(null, title + time + path.extname(file.originalname)) // titlenya ganti
-
     }
 })
 const upload = multer({storage:storage})
+
+const storage2 = multer.diskStorage({
+    destination: (req,file,cb) => {
+        cb(null, './public/avatars')
+    },
+    filename: (req, file, cb) => {
+        console.log(file);
+        console.log(req.body);
+        let username = req.body.username /// ini nanti ganti titlenya
+        // let authorId = req.body.AuthorId
+        let time = new Date().getTime()
+        req.body.avatar = username + time + path.extname(file.originalname) //titlenya ganti, covernya ganti
+        cb(null, username + time + path.extname(file.originalname)) // titlenya ganti
+    }
+})
+const upload2 = multer({storage:storage2})
 
 
 router.get('/login',Controller.login)
 router.post('/login',Controller.handleLogin)
 router.get('/register',Controller.addUser)
-router.post('/register',Controller.handleAddUser)
+router.post('/register', Controller.handleAddUser)
 router.use(function (req, res, next) {
     // console.log(req.session);
     if(!req.session.userId) {
-        const error = "please login"
+        const error = "please login"    
         res.redirect(`/login?error=${error}`)
     } else {
         next()
@@ -34,6 +49,14 @@ router.use(function (req, res, next) {
 })
 
 router.get('/profile/:id',Controller.showProfile)
+
+router.get('/addProfile', Controller.addProfile)
+router.post('/addProfile', Controller.handlerAddProfile)
+
+
+
 router.get('/post/:id', Controller.addPost)
 router.post('/post/:id',upload.single('image'),Controller.handlerAddPost)
 module.exports = router
+
+// upload2.single('avatar')
