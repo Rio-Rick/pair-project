@@ -17,7 +17,7 @@ module.exports = {
         }
       },
       image: {
-        type: Sequelize.BLOB
+        type: Sequelize.STRING
       },
       caption: {
         type: Sequelize.STRING

@@ -6,6 +6,7 @@ class Controller {
     static async homePage(req, res) {
         try {
             let memePost = await Post.findAll()
+            // res.send(memePost)
             res.render('home',{memePost})
         } catch (error) {
             console.log(error);
@@ -16,6 +17,19 @@ class Controller {
     static async addPost(req,res) {
         try {
             res.render('post')
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
+    static async handlerAddPost (req,res) {
+        try {
+            console.log(req.body);
+            const {title, caption, image} =req.body
+            await Post.create({title, caption, image})
+            res.redirect('/')
+
         } catch (error) {
             console.log(error);
             res.send(error)

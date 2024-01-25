@@ -5,7 +5,7 @@ const PORT = 3003
 const {Post, Profile, User, Like} = require('./models/index.js')
 const Controller = require('./controllers/controller.js')
 
-app.use(express.static('images'))
+app.use(express.static('public'))
 
 
 app.set('view engine', 'ejs')

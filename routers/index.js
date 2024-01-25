@@ -5,7 +5,7 @@ const path = require('path')
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: (req,file,cb) => {
-        cb(null, './images')
+        cb(null, './public/images')
     },
     filename: (req, file, cb) => {
         console.log(file)
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
         let title = req.body.title /// ini nanti ganti titlenya
         // let authorId = req.body.AuthorId
         let time = new Date().getTime()
-        req.body.cover = title + time + path.extname(file.originalname) //titlenya ganti, covernya ganti
+        req.body.image = title + time + path.extname(file.originalname) //titlenya ganti, covernya ganti
         cb(null, title + time + path.extname(file.originalname)) // titlenya ganti
 
     }
@@ -21,6 +21,8 @@ const storage = multer.diskStorage({
 const upload = multer({storage:storage})
 
 router.get('/post',Controller.addPost)
+router.post('/post', upload.single('image'), Controller.handlerAddPost)
+
 router.get('/register',Controller.addUser)
 router.post('/register',Controller.handleAddUser)
 router.get('/login',Controller.login)
