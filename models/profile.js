@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Profile.belongsTo(models.User)
       Profile.hasMany(models.Post)
-      Profile.belongsToMany(models.Post, {through : "Like", foreignKey : "ProId"})
-      Profile.hasMany(models.Like, {foreignKey : "ProId"})
+      Profile.belongsToMany(models.Post, {through : "Like", foreignKey : "profile_id"})
+      Profile.hasMany(models.Like, {foreignKey : "profile_id"})
     }
   }
   Profile.init({

@@ -16,7 +16,7 @@ module.exports = {
           key : "id"
         }
       },
-      ProId: {
+      profile_id: {
         type: Sequelize.INTEGER,
         references : {
           model : "Profiles",

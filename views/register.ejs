@@ -8,8 +8,11 @@
 
 </head>
 <body>
+  <% if(userId) {%>
+    <%- include('./componnent/navbarLog.ejs',{userId}) %>
+<% } else {%>
     <%- include('./componnent/navbar.ejs') %>
-      
+<% } %>
       <div class="container-fluid text-center m-auto">
         <form action="/register" method="post">
             <div class="row align-items-center w-50 m-auto">
