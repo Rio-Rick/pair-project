@@ -1,0 +1,13 @@
+[
+    {
+        "email" : "esyaahmad@mail.com",
+        "password" : "qwerty",
+        "role" : true
+    },
+    {
+        "email" : "test@mail.com",
+        "password" : "test123",
+        "role" : false
+
+    }
+]

@@ -1,0 +1,16 @@
+[
+    {
+        "username" : "esyaahmad",
+        "avatar" : "https://icon-library.com/images/avatar-icon-images/avatar-icon-images-4.jpg",
+        "about" : "admin is here",
+        "gender" : "male",
+        "UserId" : 1
+    },
+    {
+        "username" : "anabele",
+        "avatar" : "https://image.jpnn.com/resize/570x380-80/arsip/watermark/2017/08/12/annabelle-creator-foto-warner-bros.jpg",
+        "about" : "check my profile!",
+        "gender" : "female",
+        "UserId" : 2
+    }
+]

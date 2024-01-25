@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Post.belongsToMany(models.Profile, {through: 'Likes'}, {foreignKey: "PostId"})
+      Post.hasMany(models.Like, {
+        foreignKey: "PostId"
+      })
     }
   }
   Post.init({
