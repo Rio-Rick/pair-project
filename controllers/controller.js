@@ -52,6 +52,11 @@ class Controller {
         try {
             const {email, password} = req.body
             await User.create({email, password})
+
+            // req.session.userId = user.id
+            // let userId = req.session.userId 
+            
+            // await Profile.create({})
             res.redirect('/login')
         } catch (error) {
             console.log(error);
@@ -75,17 +80,23 @@ class Controller {
             if(email) {
                 let user = await User.findOne({ where : { email }})
                 if(user) {
-                    console.log(user);
-                    const isValidPassword = bcryptjs.compareSync(password, user.password)
-                    if(isValidPassword) {
-                        // console.log(user.id);
-                        req.session.userId = user.id
-                        let userId = req.session.userId 
-                        
-                        res.redirect(`/`)
-                    } else {
-                        const error = "Invalid username/password"
-                        res.redirect(`/login?error=${error}`)
+                    // console.log(user);
+                    let profile = await Profile.findOne({where : { UserId : user.id}})
+                    console.log(profile);
+                    if(profile) {
+                        const isValidPassword = bcryptjs.compareSync(password, user.password)
+                        if(isValidPassword) {
+                            // console.log(user.id);
+                            req.session.userId = user.id
+                            let userId = req.session.userId 
+                            
+                            res.redirect(`/`)
+                        } else {
+                            const error = "Invalid username/password"
+                            res.redirect(`/login?error=${error}`)
+                        }
+                    } else if(!profile){
+                        res.redirect(`/createProfile/${user.id}`)
                     }
                 }
             } else {
@@ -104,6 +115,24 @@ class Controller {
             let userId = req.session.userId
             
             res.render('profile',{userId})
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
+    static addProfile(req, res) {
+        let id = req.params.id
+        res.render('addProfile',{id})
+    }
+
+    static async handleAddProfile(req, res) {
+        try {
+            let UserId = req.params.id
+            req.session.userId = UserId
+            const {username, avatar, about, gender} = req.body
+            await Profile.create({username,avatar, about, gender, UserId})
+            res.redirect('/')
         } catch (error) {
             console.log(error);
             res.send(error)
