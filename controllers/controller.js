@@ -5,8 +5,11 @@ const bcryptjs = require('bcryptjs')
 class Controller {
     static async homePage(req, res) {
         try {
-            let memePost = await Post.findAll()
-            res.render('home',{memePost})
+            let userId = req.session.userId
+            // console.log(req.session.userId);
+            let memePost = await Post.findAll()       
+            res.render('home',{memePost,userId})
+
         } catch (error) {
             console.log(error);
             res.send(error)
@@ -15,12 +18,30 @@ class Controller {
 
     static async addPost(req,res) {
         try {
-            res.render('post')
+            let userId = req.session.userId
+
+            res.render('post',{userId})
         } catch (error) {
             console.log(error);
             res.send(error)
         }
     }
+
+    static async handlerAddPost (req,res) {
+        try {
+            let userId = req.session.userId
+
+            // console.log(req.body);
+            const {title, caption, image} =req.body
+            await Post.create({ProfileId : userId,title, caption, image})
+            res.redirect('/',{userId})
+
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
 
     static addUser(req, res) {
         res.render('register')
@@ -59,7 +80,9 @@ class Controller {
                     if(isValidPassword) {
                         // console.log(user.id);
                         req.session.userId = user.id
-                        res.redirect('/')
+                        let userId = req.session.userId 
+                        
+                        res.redirect(`/`)
                     } else {
                         const error = "Invalid username/password"
                         res.redirect(`/login?error=${error}`)
@@ -70,6 +93,17 @@ class Controller {
                 res.redirect(`/login?error=${error}`)
             }
 
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
+    static async showProfile(req, res) {
+        try {
+            let userId = req.session.userId
+            
+            res.render('profile',{userId})
         } catch (error) {
             console.log(error);
             res.send(error)
