@@ -32,8 +32,27 @@ class Controller {
             let userId = req.session.userId
 
             // console.log(req.body);
-            const {title, caption, image} =req.body
-            await Post.create({ProfileId : userId,title, caption, image})
+            const {title, caption, image} = req.body
+            let user = await User.findOne({
+                where : {
+                    id : userId
+                }
+            })
+            
+            let profile = await Profile.findOne({
+                where : {
+                    UserId : user.id
+                }
+            })
+            await Post.create({ProfileId : profile.id,title, caption, image})
+
+            let post = await Post.findOne({
+                where : {
+                    ProfileId : profile.id
+                }
+            })
+
+            await Like.create({PostId:post.id, profile_id : profile.id})
             res.redirect('/')
 
         } catch (error) {
@@ -115,13 +134,13 @@ class Controller {
             let userId = req.session.userId
             let id = req.params.id
             let data = await Profile.findOne({          // ini yg ditambah
-                where: {UserId:userId},
+                where: {UserId :id},
                 include: {
-                    model: Post
+                    model : Post
                 }
             })
-            // res.send(data)
-            res.render('profile',{userId, data})
+            res.send(data)
+            // res.render('profile',{userId, data})
         } catch (error) {
             console.log(error);
             res.send(error)
