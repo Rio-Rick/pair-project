@@ -33,7 +33,7 @@ class Controller {
 
             // console.log(req.body);
             const {title, caption, image} =req.body
-            await Post.create({ProfileId : userId,title, caption, image})
+            await Post.create({title, caption, image})
             res.redirect('/')
 
         } catch (error) {
@@ -113,8 +113,17 @@ class Controller {
     static async showProfile(req, res) {
         try {
             let userId = req.session.userId
-            
-            res.render('profile',{userId})
+            // let id = req.params.id
+            // let profile = Profile.findOne({ where : {UserId :id}})
+            let profile = await Profile.findOne({
+                where : { UserId : userId},
+                include : {
+                    model : Post
+                }
+            })
+ 
+            res.send(profile)
+            // res.render('profile',{userId})
         } catch (error) {
             console.log(error);
             res.send(error)
@@ -133,6 +142,26 @@ class Controller {
             const {username, avatar, about, gender} = req.body
             await Profile.create({username,avatar, about, gender, UserId})
             res.redirect('/')
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
+    static async editProfile(req, res) {
+        try {
+            let id = req.params.id
+            let profile = Profile.findOne({ where : {UserId : id}})
+            // res.render('editProfile')
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
+    static async handleEditProfile(req, res) {
+        try {
+            
         } catch (error) {
             console.log(error);
             res.send(error)
