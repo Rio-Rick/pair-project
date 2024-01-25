@@ -30,10 +30,21 @@ class Controller {
     static async handlerAddPost (req,res) {
         try {
             let userId = req.session.userId
-
+            
             // console.log(req.body);
             const {title, caption, image} =req.body
-            await Post.create({ProfileId : userId,title, caption, image})
+            let user = await User.findOne({
+                where : {
+                    id : userId
+                }
+            })
+            
+            let profile = await Profile.findOne({
+                where : {
+                    UserId : user.id
+                }
+            })
+            await Post.create({ProfileId : profile.id,title, caption, image})
             res.redirect('/')
 
         } catch (error) {
@@ -92,15 +103,18 @@ class Controller {
                             
                             res.redirect(`/`)
                         } else {
-                            const error = "Invalid username/password"
+                            const error = "Invalid email/password"
                             res.redirect(`/login?error=${error}`)
                         }
                     } else if(!profile){
                         res.redirect(`/createProfile/${user.id}`)
+                    } else {
+                        const error = "Invalid email/password"
+                        res.redirect(`/login?error=${error}`)  
                     }
                 }
             } else {
-                const error = "Invalid username/password"
+                const error = "Invalid email/password"
                 res.redirect(`/login?error=${error}`)
             }
 
@@ -114,14 +128,15 @@ class Controller {
         try {
             let userId = req.session.userId
             let id = req.params.id
-            let data = await Profile.findOne({          // ini yg ditambah
-                where: {UserId:userId},
-                include: {
-                    model: Post
-                }
+            let data = await Profile.findAll({
+                where : {
+                    UserId : id
+                },
+                include : Post
             })
+            res.send(data)
             // res.send(data)
-            res.render('profile',{userId, data})
+            // res.render('profile',{userId, data})
         } catch (error) {
             console.log(error);
             res.send(error)
@@ -160,6 +175,20 @@ class Controller {
     static async handleEditProfile(req, res) {
         try {
             
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
+    static async getLogout(req, res) {
+        try {
+            req.session.destroy((err) => {
+                if(err) res.send(err)
+                else {
+                    res.redirect('/')
+                }
+            })
         } catch (error) {
             console.log(error);
             res.send(error)
