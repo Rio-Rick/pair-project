@@ -82,7 +82,7 @@ class Controller {
                 if(user) {
                     // console.log(user);
                     let profile = await Profile.findOne({where : { UserId : user.id}})
-                    console.log(profile);
+                    // console.log(profile);
                     if(profile) {
                         const isValidPassword = bcryptjs.compareSync(password, user.password)
                         if(isValidPassword) {
@@ -113,8 +113,15 @@ class Controller {
     static async showProfile(req, res) {
         try {
             let userId = req.session.userId
-            
-            res.render('profile',{userId})
+            let id = req.params.id
+            let data = await Profile.findOne({          // ini yg ditambah
+                where: {UserId:userId},
+                include: {
+                    model: Post
+                }
+            })
+            // res.send(data)
+            res.render('profile',{userId, data})
         } catch (error) {
             console.log(error);
             res.send(error)
@@ -133,6 +140,26 @@ class Controller {
             const {username, avatar, about, gender} = req.body
             await Profile.create({username,avatar, about, gender, UserId})
             res.redirect('/')
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
+    static async editProfile(req, res) {
+        try {
+            let id = req.params.id
+            let profile = Profile.findOne({ where : {id}})
+            res.render('editProfile')
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
+    static async handleEditProfile(req, res) {
+        try {
+            
         } catch (error) {
             console.log(error);
             res.send(error)
