@@ -51,20 +51,25 @@ class Controller {
     static async handleLogin(req, res) {
         try {
             const {email, password} = req.body
-            
-            let user = await User.findOne({ where : { email }})
-            if(user.email) {
-                const isValidPassword = bcryptjs.compareSync(password, user.password)
-                if(isValidPassword) {
-                    res.redirect('/')
-                } else {
-                    const error = "Invalid username/password"
-                    res.redirect(`/login?error=${error}`)
+            if(email) {
+                let user = await User.findOne({ where : { email }})
+                if(user) {
+                    console.log(user);
+                    const isValidPassword = bcryptjs.compareSync(password, user.password)
+                    if(isValidPassword) {
+                        // console.log(user.id);
+                        req.session.userId = user.id
+                        res.redirect('/')
+                    } else {
+                        const error = "Invalid username/password"
+                        res.redirect(`/login?error=${error}`)
+                    }
                 }
             } else {
                 const error = "Invalid username/password"
                 res.redirect(`/login?error=${error}`)
             }
+
         } catch (error) {
             console.log(error);
             res.send(error)
