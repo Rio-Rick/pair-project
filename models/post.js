@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Post.belongsTo(models.Profile)
+      Post.belongsToMany(models.Profile, {through : "Like", foreignKey : "ProId"})
+      Post.hasMany(models.Like, {foreignKey : "PostId"})
     }
   }
   Post.init({
