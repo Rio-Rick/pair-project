@@ -34,7 +34,7 @@ class Controller {
             // console.log(req.body);
             const {title, caption, image} =req.body
             await Post.create({ProfileId : userId,title, caption, image})
-            res.redirect('/',{userId})
+            res.redirect('/')
 
         } catch (error) {
             console.log(error);
