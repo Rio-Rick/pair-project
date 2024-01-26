@@ -62,7 +62,14 @@ class Controller {
 
 
     static addUser(req, res) {
+        let errors = []
+
+        if(req.query.errors) {
+            
+        }
         res.render('register')
+
+
 
     }
 
@@ -71,14 +78,24 @@ class Controller {
             const {email, password} = req.body
             await User.create({email, password})
 
+
             // req.session.userId = user.id
             // let userId = req.session.userId 
             
             // await Profile.create({})
             res.redirect('/login')
         } catch (error) {
-            console.log(error);
-            res.send(error)
+            if(error.name === "SequelizeValidationError") {
+                let errMsg = error.errors.map((err) => {
+                    return err.message
+                })
+                // res.send(errMsg)
+                res.redirect(`/memes/add?errors=${errMsg}`)
+            } else {
+                console.log(error);
+                res.send(error)
+
+            }
         }
     }
 

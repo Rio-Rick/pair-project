@@ -41,7 +41,7 @@ router.post('/login',Controller.handleLogin)
 router.get('/register',Controller.addUser)
 router.post('/register',Controller.handleAddUser)
 router.get('/createProfile/:id',Controller.addProfile)
-router.post('/createProfile/:id',upload2.single('avatar'),Controller.handleAddProfile)
+router.post('/createProfile/:id', upload2.single('avatar'),Controller.handleAddProfile)
 router.use(function (req, res, next) {
     // console.log(req.session);
     if(!req.session.userId) {
@@ -52,11 +52,10 @@ router.use(function (req, res, next) {
     }
 })
 router.get('/logout',Controller.getLogout)
-
 router.get('/profile/:id',Controller.showProfile)
 router.get('/post/:id', Controller.addPost)
 router.post('/post/:id',upload.single('image'),Controller.handlerAddPost)
 router.get('/profile/:id/edit',Controller.editProfile)
-router.post('/profile/:id/edit',Controller.handleEditProfile)
+router.post('/profile/:id/edit',upload2.single('avatar'),Controller.handleEditProfile)
 
 module.exports = router

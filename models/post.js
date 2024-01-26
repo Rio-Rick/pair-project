@@ -17,15 +17,42 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Post.belongsTo(models.Profile)
-      Post.belongsToMany(models.Profile, {through : "Like", foreignKey : "profile_id"})
+      // Post.belongsToMany(models.Profile, {through : "Like", foreignKey : "profile_id"})
       Post.hasMany(models.Like, {foreignKey : "PostId"})
     }
   }
   Post.init({
     ProfileId: DataTypes.INTEGER,
-    image: DataTypes.STRING,
-    caption: DataTypes.STRING,
-    title: DataTypes.STRING
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: `image can't be null`},
+        notEmpty: {
+          msg: `image can't be empty`
+        }
+      }},
+    caption: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: `caption can't be null`},
+        notEmpty: {
+          msg: `caption can't be empty`
+        }
+      }},
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: {
+          msg: `title can't be null`},
+        notEmpty: {
+          msg: `title can't be empty`
+        }
+      }},
   }, {
     sequelize,
     modelName: 'Post',

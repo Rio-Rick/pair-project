@@ -13,14 +13,21 @@
     <% } else {%>
         <%- include('./componnent/navbarNonSearch.ejs') %>
     <% } %>
-    <form action="/profile/<%= id %>/edit" method="post">
+    <form action="/profile/<%= id %>/edit" method="post" enctype="multipart/form-data">
             <div class="row align-items-center w-50 m-auto">
                 <div class="col">
                     <label for="inputPassword4" class="form-label">Username</label>
                     <input type="text" class="form-control"  name="username" value="<%= profile.username %>">
                 </div>
             </div>
-            
+            <div class="row align-items-center w-50 m-auto">
+                <div class="col">
+                <label for="inputPassword4" class="form-label">Avatar</label>
+                <br>
+                <img src="http://localhost:3003/avatars/<%= profile.avatar %>" alt="">
+                <br>
+                <input type="file" class="form-control"  name="avatar">
+                </div>
             </div>
             <div class="row align-items-center w-50 m-auto">
                 <div class="col">
