@@ -10,22 +10,18 @@
               <a class="nav-link active" aria-current="page" href="/rank"></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/profile">Profile</a>
+                <a class="nav-link active" aria-current="page" href="/profile/<%= userId %>">Profile</a>
             </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/post">addPost</a>
+            <a class="nav-link active" aria-current="page" href="/post/<%= userId %>">addPost</a>
           </li>
         </ul>
         <form class="d-flex" role="search">
-            <input class="form-control me-2" type="text" name="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success me-2" type="submit">Search</button>
         </form>
-        <a href="/login">
-            <button class="btn btn-outline-success me-2" type="submit">Login</button>
+        <a href="/logout">
+            <button class="btn btn-outline-success me-2" type="submit">Log out</button>
         </a>
-        <a href="/register">
-            <button class="btn btn-outline-success me-2" type="submit">Register</button>
-        </a>
+
     </div>
     </div>
   </nav>

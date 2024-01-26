@@ -1,13 +1,19 @@
 const {Post, Profile, User, Like} = require('../models/index')
 const bcryptjs = require('bcryptjs')
+const {Op} = require('sequelize')
 
 
 class Controller {
     static async homePage(req, res) {
         try {
             let userId = req.session.userId
+            let search = req.query.search
             // console.log(req.session.userId);
-            let memePost = await Post.findAll()       
+            let memePost = await Post.findAll({
+                where : {
+                    title: {[Op.iLike] : search ? `%${search}%` : '%%'}
+                }
+            })       
             res.render('home',{memePost,userId})
 
         } catch (error) {
@@ -219,8 +225,8 @@ class Controller {
                     UserId : user.id
                 }
             })
-            const {username, avatar, about, gender} = req.body
-            await Profile.update({username :username ,avatar :avatar, about :about, gender : gender}, {
+            const {username, about, gender} = req.body
+            await Profile.update({username :username , about :about, gender : gender}, {
                 where : {UserId: user.id}
             })
             res.redirect(`/profile/${id}`)

@@ -8,9 +8,9 @@
 </head>
 <body>
   <% if(userId) {%>
-    <%- include('./componnent/navbarLog.ejs',{userId}) %>
+    <%- include('./componnent/navbarLogNonSearch.ejs',{userId}) %>
   <% } else {%>
-    <%- include('./componnent/navbar.ejs') %>
+    <%- include('./componnent/navbarNonSearch.ejs') %>
   <% } %>
 
   <div class="container-fluid text-center m-auto">
