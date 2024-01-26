@@ -9,9 +9,9 @@
 </head>
 <body>
     <% if(userId) {%>
-        <%- include('./componnent/navbarLog.ejs',{userId}) %>
+        <%- include('./componnent/navbarLogNonSearch.ejs',{userId}) %>
     <% } else {%>
-        <%- include('./componnent/navbar.ejs') %>
+        <%- include('./componnent/navbarNonSearch.ejs') %>
     <% } %>
         
     <div class="container mt-4 mb-4 p-3 d-flex justify-content-center"> 
@@ -41,7 +41,7 @@
                     <span><i class="fa fa-linkedin"></i></span> 
                 </div> 
                 <div class=" px-2 rounded mt-4 date "> 
-                    <span class="join">Joined May,2021</span>
+                    <span class="join">Joined, <%= data.createdAt.getDate() %> <%= data.month %></span>
                 </div> 
             </div>
          </div>
