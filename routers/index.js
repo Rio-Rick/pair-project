@@ -51,10 +51,12 @@ router.use(function (req, res, next) {
         next()
     }
 })
+router.get('/logout',Controller.getLogout)
 
 router.get('/profile/:id',Controller.showProfile)
 router.get('/post/:id', Controller.addPost)
 router.post('/post/:id',upload.single('image'),Controller.handlerAddPost)
 router.get('/profile/:id/edit',Controller.editProfile)
 router.post('/profile/:id/edit',Controller.handleEditProfile)
+
 module.exports = router

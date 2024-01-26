@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    get month () {
+      const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+      const d = this.createdAt;
+      let name = month[d.getMonth()];
+      return name
+    }
     static associate(models) {
       // define association here
       Profile.belongsTo(models.User)

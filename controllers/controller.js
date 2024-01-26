@@ -33,7 +33,19 @@ class Controller {
 
             // console.log(req.body);
             const {title, caption, image} =req.body
-            await Post.create({ProfileId : userId,title, caption, image})
+            let user = await User.findOne({
+                where : {
+                    id : userId
+                }
+            })
+            
+            let profile = await Profile.findOne({
+                where : {
+                    UserId : user.id
+                }
+            })
+          
+            await Post.create({ProfileId : profile.id,title, caption, image})
             res.redirect('/')
 
         } catch (error) {
@@ -92,15 +104,18 @@ class Controller {
                             
                             res.redirect(`/`)
                         } else {
-                            const error = "Invalid username/password"
+                            const error = "Invalid email/password"
                             res.redirect(`/login?error=${error}`)
                         }
                     } else if(!profile){
                         res.redirect(`/createProfile/${user.id}`)
+                    } else {
+                        const error = "Invalid email/password"
+                            res.redirect(`/login?error=${error}`)
                     }
                 }
             } else {
-                const error = "Invalid username/password"
+                const error = "Invalid email/password"
                 res.redirect(`/login?error=${error}`)
             }
 
@@ -128,6 +143,20 @@ class Controller {
         }
     }
 
+    static async getLogout(req, res) {
+        try {
+            req.session.destroy((err) => {
+                if(err) res.send(err)
+                else {
+                    res.redirect('/')
+                }
+            })
+        } catch (error) {
+            console.log(error);
+            res.send(error)
+        }
+    }
+
     static addProfile(req, res) {
         let id = req.params.id
         res.render('addProfile',{id})
@@ -148,9 +177,24 @@ class Controller {
 
     static async editProfile(req, res) {
         try {
+            console.log(req.body);
+
             let id = req.params.id
-            let profile = Profile.findOne({ where : {id}})
-            res.render('editProfile')
+            let userId = req.session.userId
+
+            let user = await User.findOne({
+                where : {
+                    id : id
+                }
+            })
+            
+            let profile = await Profile.findOne({
+                where : {
+                    UserId : user.id
+                }
+            })
+            // res.send(profile)
+            res.render('editProfile', {profile , userId, id})
         } catch (error) {
             console.log(error);
             res.send(error)
@@ -159,7 +203,27 @@ class Controller {
 
     static async handleEditProfile(req, res) {
         try {
+            console.log(req.body);
+            let UserId = req.params.id
+            req.session.userId = UserId
+            let id = req.params.id
+            console.log(id,req.session.userId);
+            let user = await User.findOne({
+                where : {
+                    id : id
+                }
+            })
             
+            let profile = await Profile.findOne({
+                where : {
+                    UserId : user.id
+                }
+            })
+            const {username, avatar, about, gender} = req.body
+            await Profile.update({username :username ,avatar :avatar, about :about, gender : gender}, {
+                where : {UserId: user.id}
+            })
+            res.redirect(`/profile/${id}`)
         } catch (error) {
             console.log(error);
             res.send(error)

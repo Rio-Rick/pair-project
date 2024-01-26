@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const postTime = require('../helpers/postTime');
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
     /**
@@ -9,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+    time() {
+      return postTime(this.createdAt)
+    }
     static associate(models) {
       // define association here
       Post.belongsTo(models.Profile)
