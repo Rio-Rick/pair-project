@@ -155,11 +155,11 @@ class Controller {
             let data = await Profile.findOne({          // ini yg ditambah
                 where: {UserId:userId},
                 include: {
-                    model: Post
+                    model: Like
                 }
             })
-            // res.send(data)
-            res.render('profile',{userId, data})
+            res.send(data)
+            // res.render('profile',{userId, data})
         } catch (error) {
             console.log(error);
             res.send(error)
